@@ -38,6 +38,7 @@ class UserList(generics.ListCreateAPIView):
 
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'homepage/index.html'
+    model = User
     serializer_class = UserSerializer
     @method_decorator(csrf_exempt)
     def get(self, request):
