@@ -99,8 +99,9 @@ def baby_detail(request, id):
         serializer = BabySerializer(baby)
         return JSONResponse(serializer.data)
 
-    elif request.method == 'PUT':
-        data = JSONParser().parse(request)
+    elif request.method == 'POST':
+        body_unicode = request.body.decode('utf-8')
+        data = json.loads(body_unicode)
         serializer = BabySerializer(baby, data=data)
         if serializer.is_valid():
             serializer.save()
@@ -151,8 +152,9 @@ def daddy_detail(request, id):
         serializer = DaddySerializer(daddy)
         return JSONResponse(serializer.data)
 
-    elif request.method == 'PUT':
-        data = JSONParser().parse(request.data)
+    elif request.method == 'POST':
+        body_unicode = request.body.decode('utf-8')
+        data = json.loads(body_unicode)
         serializer = DaddySerializer(daddy, data=data)
         if serializer.is_valid():
             serializer.save()

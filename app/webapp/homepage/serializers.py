@@ -18,7 +18,7 @@ class BabySerializer(serializers.Serializer):
         Update and return an existing `Snippet` instance, given the validated data.
         """
         instance.first_name = validated_data.get('first_name', instance.first_name)
-        instance.last_name = validated_data.get('last_name', instance.second_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
         instance.id = validated_data.get('id', instance.id)
 
         instance.save()
@@ -39,7 +39,7 @@ class DaddySerializer(serializers.Serializer):
         Update and return an existing `Snippet` instance, given the validated data.
         """
         instance.first_name = validated_data.get('first_name', instance.first_name)
-        instance.last_name = validated_data.get('last_name', instance.second_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
         instance.id = validated_data.get('id', instance.id)
 
         instance.save()
