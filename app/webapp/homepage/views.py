@@ -1,3 +1,5 @@
+from django.utils.decorators import method_decorator
+
 __author__ = 'Patrick'
 from rest_framework import viewsets
 # from django.contrib.auth.models import User, Group
@@ -7,6 +9,13 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
+from rest_framework.response import Response
+from rest_framework.renderers import TemplateHTMLRenderer
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from django.shortcuts import get_object_or_404
+from rest_framework import generics
+
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -25,6 +34,31 @@ class JSONResponse(HttpResponse):
         kwargs['content_type'] = 'application/json'
         super(JSONResponse, self).__init__(content, **kwargs)
 
+class UserList(generics.ListCreateAPIView):
+
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'homepage/index.html'
+    serializer_class = UserSerializer
+    @method_decorator(csrf_exempt)
+    def get(self, request):
+        queryset = User.objects.all()
+        profile = get_object_or_404(User, id=1)
+        serializer = UserSerializer(profile)
+        return Response({'users': queryset, 'serializer': serializer} )
+
+    #
+    # def post(self, request):
+    #     content = JSONRenderer().render(request.data)
+    #     new_user = User(id = request.data.id)
+    #     new_user.save()
+    #     User.objects.create(content)
+    #     queryset = User.objects.all()
+    #     profile = get_object_or_404(User, request.data.id)
+    #
+    #     serializer = UserSerializer(profile)
+    #
+    #     return Response({'users': queryset, 'serializer': serializer} )
+
 @csrf_exempt
 def user_list(request):
     """
@@ -36,7 +70,15 @@ def user_list(request):
         return JSONResponse(serializer.data)
 
     elif request.method == 'POST':
-        data = JSONParser().parse(request)
+        # print(request)
+        # data = JSONParser().parse(request)
+        data =   {
+
+              "first_name": "New",
+              "last_name": "User",
+              "id": 6
+
+          }
         serializer = UserSerializer(data=data)
         if serializer.is_valid():
             serializer.save()

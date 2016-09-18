@@ -22,7 +22,6 @@ from homepage import views
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 
-
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api', include(router.urls)),
