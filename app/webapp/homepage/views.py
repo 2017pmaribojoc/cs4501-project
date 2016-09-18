@@ -15,6 +15,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from rest_framework import generics
+import json
 
 
 
@@ -74,7 +75,8 @@ def baby_list(request):
 
     elif request.method == 'POST':
         # print(request)
-        data = JSONParser().parse(request.Data)
+        body_unicode = request.body.decode('utf-8')
+        data = json.loads(body_unicode)
 
         serializer = BabySerializer(data=data)
         if serializer.is_valid():
@@ -122,7 +124,11 @@ def daddy_list(request):
 
     elif request.method == 'POST':
         # print(request)
-        data = JSONParser().parse(request.POST)
+        body_unicode = request.body.decode('utf-8')
+        data = json.loads(body_unicode)
+
+        # data = JSONParser().parse(request.body)
+        # data = request.body
 
         serializer = DaddySerializer(data=data)
         if serializer.is_valid():
